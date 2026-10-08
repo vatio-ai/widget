@@ -1,0 +1,55 @@
+{
+  "name": "@vatio-ai/widget",
+  "version": "1.0.0",
+  "description": "The Vatio chat widget: put your Vatio agent on any website, from a script tag or from your app's code",
+  "keywords": [
+    "vatio",
+    "agent",
+    "ai",
+    "chat",
+    "widget"
+  ],
+  "homepage": "https://vatio.ai/docs/channels/widget",
+  "bugs": "https://github.com/vatio-ai/widget/issues",
+  "license": "MIT",
+  "author": "Vatio",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist/index.js",
+    "dist/index.d.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.lib.json && cp .types/index.d.ts dist/index.d.ts && rm -rf .types",
+    "prepack": "npm run build:lib",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vatio-ai/sdk": "^3.5.0"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.10.6",
+    "preact": "^10.29.8",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.11"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vatio-ai/widget"
+  }
+}

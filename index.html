@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>vatio-widget dev</title>
+    <style>
+      html, body { height: 100%; margin: 0; font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+      body { display: flex; }
+      #page { flex: 1; padding: 2rem; color: #6b7280; }
+      #root { position: fixed; inset: 0; pointer-events: none; }
+    </style>
+  </head>
+  <body>
+    <div id="page">
+      <h1>vatio-widget dev harness</h1>
+      <p>This stands in for a real host page. The widget mounts itself below,
+      bubble-launcher style, using dev defaults instead of a real
+      &lt;script data-*&gt; tag -- see src/dev-main.tsx.</p>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/dev-main.tsx"></script>
+  </body>
+</html>
