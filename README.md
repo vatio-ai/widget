@@ -49,7 +49,7 @@ useEffect(() => {
 
 Every option is also a `data-*` attribute on the script tag (`replyStyle` is
 `data-reply-style`). Anything you leave out comes from the workspace's own
-settings in the Vatio console, then from the built-in default.
+settings (**Channels → Web widget** in the inbox), then from the built-in default.
 
 | Option | |
 |---|---|
