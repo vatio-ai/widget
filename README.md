@@ -8,6 +8,20 @@ reach it.
 You need a Vatio workspace and a **publishable token** (`vatpub_…`) that allows
 your site's origin: `vatio tokens create --env live --origin https://your-site.com`.
 
+## The quickest way
+
+Building your app with Claude Code, Cursor or Codex? Let your coding agent do
+all of this. In your app's project:
+
+```bash
+npx @vatio-ai/skills
+```
+
+Then, in Claude Code, `/vatio-init` creates the agent from your app, and
+`/vatio-add-to-app` adds this widget to your web app with a token for development
+and one for production (in Cursor or Codex, ask it to use those
+skills). See [An AI chat for your web app or site](https://vatio.ai/guides/ai-chat-widget-for-your-website).
+
 ## With a script tag
 
 ```html
