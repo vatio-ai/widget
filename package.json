@@ -40,7 +40,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vatio-ai/sdk": "^3.5.1"
+    "@vatio-ai/sdk": "^3.5.4"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.6",
