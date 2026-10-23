@@ -5,8 +5,9 @@ your site that opens a conversation with your agent. Preact inside a shadow
 root, so it does not care which framework your page uses and your CSS does not
 reach it.
 
-You need a Vatio workspace and a **publishable token** (`vatpub_…`) that allows
-your site's origin: `vatio tokens create --env live --origin https://your-site.com`.
+You need a Vatio workspace and a **publishable key** (`vatpub_…`) that allows
+your site's origin. How to create one is in the guide:
+<https://vatio.ai/docs/channels/widget>.
 
 ## The quickest way
 
