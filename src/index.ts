@@ -22,7 +22,7 @@ export interface VatioWidgetOptions {
   token: string;
   /** Where the Vatio API answers. Defaults to https://vatio.ai. */
   baseUrl?: string;
-  /** The signed-in visitor's JWT, or a Supabase access token. Change it later with identify(). */
+  /** The signed-in visitor's JWT. Change it later with identify(). */
   visitorToken?: string | null;
   position?: "left" | "right";
   scheme?: "auto" | "light" | "dark";

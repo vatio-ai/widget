@@ -5,7 +5,6 @@ import { copyFor } from "./lib/copy";
 import { prefer, replyStyleFrom, schemeFrom, suggestionsFrom, themeWith, type PageTheme } from "./lib/config";
 import { mountShadowWidget } from "./shadowMount";
 import type { RemoteConfig, VatioSdk } from "./lib/sdk";
-import { captureSignInCode, currentToken, finishSignIn, storageKey, watchSession } from "./lib/supabaseSession";
 
 // Bundled, not fetched. This used to be a dynamic `import()` of a sibling
 // /v1/sdk.js on the CDN, so the two files could be versioned and cached
@@ -48,17 +47,11 @@ export interface StartedWidget {
 
 export function start(options: StartOptions): StartedWidget {
   let visitorToken = options.visitorToken;
-  // A page that says who is signed in is trusted over the Supabase session
-  // the widget would otherwise read.
-  let pageIdentifies = visitorToken != null;
   // Until <App> is rendered, identify() only records who is signed in;
   // initialVisitorToken is read from `visitorToken` when it does render.
   let liveIdentify: ((token: string | null) => void) | null = null;
   let mounted: { unmount(): void } | null = null;
-  let stopWatching: (() => void) | null = null;
   let stopped = false;
-
-  captureSignInCode();
 
   // Nothing renders until we know there is an agent to talk to: a bubble
   // that opens onto an error is worse than no bubble.
@@ -94,12 +87,6 @@ export function start(options: StartOptions): StartedWidget {
     const greeting = prefer(options.greeting, ui.greeting);
     const suggestions = suggestionsFrom(options.suggestions != null ? options.suggestions : (ui.suggestions || null));
 
-    const supabaseKey = remote.auth?.supabase ? storageKey(remote.auth.supabase) : null;
-    if (supabaseKey) {
-      finishSignIn(options.baseUrl, supabaseKey);
-      if (!pageIdentifies) visitorToken = currentToken(supabaseKey);
-    }
-
     const config: AppConfig = {
       workspace: options.workspace,
       token: options.token,
@@ -132,13 +119,6 @@ export function start(options: StartOptions): StartedWidget {
         remote,
         onReady: (api) => {
           liveIdentify = api.identify;
-          if (!supabaseKey || pageIdentifies) return;
-
-          stopWatching = watchSession(supabaseKey, visitorToken, (next) => {
-            if (pageIdentifies) return stopWatching?.();
-            visitorToken = next;
-            api.identify(next);
-          });
         }
       }
     });
@@ -146,7 +126,6 @@ export function start(options: StartOptions): StartedWidget {
 
   return {
     identify(value) {
-      pageIdentifies = true;
       const next = value == null || value === "" ? null : String(value);
       if (next === visitorToken) return;
       visitorToken = next;
@@ -156,8 +135,6 @@ export function start(options: StartOptions): StartedWidget {
     // is still waiting on /config from happening at all.
     unmount() {
       stopped = true;
-      stopWatching?.();
-      stopWatching = null;
       mounted?.unmount();
       mounted = null;
       liveIdentify = null;

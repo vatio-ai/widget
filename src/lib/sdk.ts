@@ -105,9 +105,6 @@ export interface RemoteConfig {
   ui?: RemoteUi | null;
   agent: { name: string | null; avatar_url: string | null; about: string | null } | null;
   locale: string | null;
-  // Present when the workspace's users sign in with Supabase: the project
-  // whose session the widget reads off the page (lib/supabaseSession.ts).
-  auth?: { supabase?: string } | null;
 }
 
 export interface VatioSdk {

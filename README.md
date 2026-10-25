@@ -70,7 +70,7 @@ settings (**Channels → Web widget** in the inbox), then from the built-in defa
 |---|---|
 | `workspace`, `token` | Required. |
 | `baseUrl` | Where the Vatio API answers. Defaults to `https://vatio.ai`. |
-| `visitorToken` | The signed-in visitor's JWT, or a Supabase access token. If your workspace uses Supabase Auth, the widget reads the page's session on its own. |
+| `visitorToken` | The signed-in visitor's JWT, signed by your backend. |
 | `position` | `"left"` or `"right"`. |
 | `scheme` | `"auto"`, `"light"` or `"dark"`. |
 | `replyStyle` | `"stream"` or `"paced"`. |
