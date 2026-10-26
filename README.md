@@ -18,10 +18,9 @@ all of this. In your app's project:
 npx @vatio-ai/skills
 ```
 
-Then, in Claude Code, `/vatio-init` creates the agent from your app, and
-`/vatio-add-to-app` adds this widget to your web app with a token for development
-and one for production (in Cursor or Codex, ask it to use those
-skills). See [An AI chat for your web app or site](https://vatio.ai/docs/guides/ai-chat-widget-for-your-website).
+Then, in Claude Code, `/vatio-init` creates the agent from your app (in Cursor
+or Codex, ask it to use vatio-init). Then ask your coding agent to add this
+widget to your web app with a token for development and one for production. See [An AI chat for your web app or site](https://vatio.ai/docs/guides/ai-chat-widget-for-your-website).
 
 ## With a script tag
 
