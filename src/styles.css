@@ -299,6 +299,17 @@ header svg { width: 17px; height: 17px }
   border-radius: 18px; line-height: 1.5;
 }
 #list.paced .turn.assistant .tools { display: none }
+
+/* A link the agent sends as a button, under the text it belongs to. */
+.turn .cta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px }
+.turn .cta:first-child { margin-top: 0 }
+.cta-button {
+  display: inline-flex; align-items: center; min-height: 36px; max-width: 100%; padding: 7px 16px;
+  border-radius: 999px; background: var(--accent); color: var(--accent-ink); font-size: 14px; font-weight: 600;
+  line-height: 1.3; text-decoration: none; overflow-wrap: anywhere;
+}
+.cta-button:hover { opacity: 0.9 }
+.cta-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
 #list.paced .turn.assistant + .turn.assistant, #list.paced .turn.assistant + #typing { margin-top: -12px }
 #list.paced #typing { background: var(--raise); height: 36px; padding: 0 14px; border-radius: 18px }
 

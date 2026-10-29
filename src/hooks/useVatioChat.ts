@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { ChatAttachment, ChatSession, ChatStatus, ConversationEntry, ReplyStyle, SessionKey, VatioSdk } from "../lib/sdk";
+import type { ChatAttachment, ChatButton, ChatMessage, ChatSession, ChatStatus, ConversationEntry, ReplyStyle, SessionKey, VatioSdk } from "../lib/sdk";
 import { kindOf } from "../lib/files";
+import { urlButtons, withoutButtonLinks } from "../lib/buttons";
 import type { FeedbackRating, VisitorFeedback } from "../lib/feedback";
 import type { Copy } from "../lib/copy";
 
@@ -25,6 +26,9 @@ export interface Turn {
   mediaLabel?: boolean;
   // Kept for a retry of a message that failed to send.
   files?: File[];
+  // Links the agent's answer sends as buttons, drawn under it; `text` no
+  // longer has them.
+  buttons?: ChatButton[];
 }
 
 function fromServer(attachments: ChatAttachment[] | undefined): TurnAttachment[] | undefined {
@@ -133,17 +137,20 @@ export function useVatioChat(args: UseVatioChatArgs) {
     return id;
   }, []);
 
-  const addAssistant = useCallback((text: string, animate: boolean) => {
+  const addAssistant = useCallback((message: ChatMessage, animate: boolean) => {
     const id = nextId++;
     const reducedMotion = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const value = String(text == null ? "" : text);
+    const buttons = urlButtons(message.buttons);
+    const content = String(message.content == null ? "" : message.content);
+    const value = buttons.length ? withoutButtonLinks(content, buttons) : content;
+    const extra = buttons.length ? { buttons } : {};
 
     if (!animate || reducedMotion || value.length < 2) {
-      setTurns((prev) => [...prev, { id, role: "assistant", text: value }]);
+      setTurns((prev) => [...prev, { id, role: "assistant", text: value, ...extra }]);
       return;
     }
 
-    setTurns((prev) => [...prev, { id, role: "assistant", text: "", streaming: true }]);
+    setTurns((prev) => [...prev, { id, role: "assistant", text: "", streaming: true, ...extra }]);
     paint(id, value);
   }, [paint]);
 
@@ -213,8 +220,8 @@ export function useVatioChat(args: UseVatioChatArgs) {
           // one, and lowers them for good after the last.
           if (replyStyle === "paced") {
             setTyping(false);
-            addAssistant(message.content, false);
-          } else addAssistant(message.content, true);
+            addAssistant(message, false);
+          } else addAssistant(message, true);
         });
         session.on("typing", (isTyping) => setTyping(isTyping));
         session.on("status", (state: ChatStatus) => {
@@ -251,7 +258,7 @@ export function useVatioChat(args: UseVatioChatArgs) {
                 attachments: fromServer(message.attachments),
                 mediaLabel: message.content_is_media_label
               });
-            } else addAssistant(message.content, false);
+            } else addAssistant(message, false);
           });
         });
       })

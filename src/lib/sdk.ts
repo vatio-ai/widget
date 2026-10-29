@@ -15,6 +15,14 @@ export interface ChatAttachment {
   url: string | null;
 }
 
+// A link the reply sends as a button. It is still in `content` too; absent
+// from a server that does not send buttons.
+export interface ChatButton {
+  type: "url" | string;
+  title: string;
+  url?: string;
+}
+
 export interface ChatMessage {
   id?: number;
   role: "user" | "assistant";
@@ -22,6 +30,7 @@ export interface ChatMessage {
   attachments?: ChatAttachment[];
   // `content` is only a stand-in ("Image", "Audio") for a file-only message.
   content_is_media_label?: boolean;
+  buttons?: ChatButton[];
 }
 
 // A message that changed after it was sent: a voice note's transcript.

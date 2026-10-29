@@ -83,9 +83,11 @@ class FakeSession implements ChatSession {
     this.onTyping?.(true);
     await new Promise((resolve) => setTimeout(resolve, 500));
     this.onTyping?.(false);
-    const reply = `You said: **${text}**\n\nHere's a fenced example:\n\n\`\`\`js\nconsole.log("hello from dev-main.tsx");\n\`\`\`\n\nAnd a list:\n\n1. Edit \`src/App.tsx\`\n2. Save\n3. Watch it hot-reload`;
-    this.log.push({ role: "assistant", content: reply });
-    this.onMessage?.({ role: "assistant", content: reply });
+    const reply = `You said: **${text}**\n\nHere's a fenced example:\n\n\`\`\`js\nconsole.log("hello from dev-main.tsx");\n\`\`\`\n\nAnd a list:\n\n1. Edit \`src/App.tsx\`\n2. Save\n3. Watch it hot-reload\n\n[Talk to support](https://example.com/support)`;
+    // The last line goes out as a button, as a `button: true` link does.
+    const buttons = [{ type: "url", title: "Talk to support", url: "https://example.com/support" }];
+    this.log.push({ role: "assistant", content: reply, buttons });
+    this.onMessage?.({ role: "assistant", content: reply, buttons });
     this.replies += 1;
     if (this.replies === 3) {
       this.moment = { agentName: "Dev Agent", messageId: this.replies, rating: null, submittedAt: null, dismissed: false };

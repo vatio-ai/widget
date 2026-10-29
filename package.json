@@ -1,6 +1,6 @@
 {
   "name": "@vatio-ai/widget",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "The Vatio chat widget: put your Vatio agent on any website, from a script tag or from your app's code",
   "keywords": [
     "vatio",

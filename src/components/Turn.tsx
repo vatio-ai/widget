@@ -38,7 +38,18 @@ export function Turn({ turn, copy, onRetry }: { turn: TurnData; copy: Copy; onRe
 
   return (
     <div className="turn assistant">
-      <div ref={bodyRef} className={"md" + (turn.streaming ? " streaming" : "")} dangerouslySetInnerHTML={{ __html: html }} />
+      {turn.text.trim() || turn.streaming || !turn.buttons?.length ? (
+        <div ref={bodyRef} className={"md" + (turn.streaming ? " streaming" : "")} dangerouslySetInnerHTML={{ __html: html }} />
+      ) : null}
+      {!turn.streaming && turn.buttons?.length ? (
+        <div className="cta">
+          {turn.buttons.map((button, index) => (
+            <a key={index} className="cta-button" href={button.url} target="_blank" rel="noopener noreferrer nofollow">
+              {button.title}
+            </a>
+          ))}
+        </div>
+      ) : null}
       {!turn.streaming && turn.text.trim() ? (
         <div className="tools">
           <CopyButton className="act" text={turn.text} copy={copy} />
