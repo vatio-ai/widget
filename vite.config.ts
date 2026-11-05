@@ -19,12 +19,21 @@ import { buildStamp } from "./build-stamp";
 //                           hands to Cloudflare Pages as cdn.vatio.ai/v1/
 //   inside the monorepo     backend/public/v1, for the Rails app in development
 //   anywhere else           dist/script (the public vatio-ai/widget repo)
+//
+// The SDK inside it is the one in this repo's sdk/src, not the one on npm, so
+// every deploy ships the newest SDK with no release to wait for and no
+// lockfile to bump: an SDK change reaches every page that embeds the widget
+// on the same push to main that publishes it to npm. Outside the monorepo
+// (the public vatio-ai/widget repo) there is no sdk/src, and the build takes
+// @vatio-ai/sdk from npm like any other dependency.
 const cdn = process.env.VATIO_BUILD_TARGET === "cdn";
 const inMonorepo = existsSync(fileURLToPath(new URL("../../backend/public", import.meta.url)));
 const outDir = cdn ? "../dist/v1" : inMonorepo ? "../../backend/public/v1" : "dist/script";
+const sdkSource = fileURLToPath(new URL("../../sdk/src/index.ts", import.meta.url));
 
 export default defineConfig({
   plugins: [preact()],
+  resolve: existsSync(sdkSource) ? { alias: { "@vatio-ai/sdk": sdkSource } } : {},
   build: {
     outDir,
     emptyOutDir: false,
