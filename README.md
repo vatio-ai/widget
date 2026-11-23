@@ -5,22 +5,23 @@ your site that opens a conversation with your agent. Preact inside a shadow
 root, so it does not care which framework your page uses and your CSS does not
 reach it.
 
-You need a Vatio workspace and a **publishable key** (`vatpub_…`) that allows
-your site's origin. How to create one is in the guide:
-<https://vatio.ai/docs/channels/widget>.
+You need a Vatio workspace and its **publishable key** (`vatpub_…`). One key
+works from any site, `localhost` and production alike: there is no list of
+allowed origins. The Vatio MCP's `get_status` returns the key and the widget's
+script tag ready to paste (`put_in_the_app`); the inbox shows the same snippet
+on its **Web chat** page. See <https://vatio.ai/docs/channels/widget>.
 
 ## The quickest way
 
-Building your app with Claude Code, Cursor or Codex? Let your coding agent do
-all of this. In your app's project:
+Let your coding agent do all of this. Add the Vatio MCP to it, in Claude Code:
 
 ```bash
-npx @vatio-ai/skills
+claude mcp add --transport http vatio https://vatio.ai/mcp
 ```
 
-Then, in Claude Code, `/vatio-init` creates the agent from your app (in Cursor
-or Codex, ask it to use vatio-init). Then ask your coding agent to add this
-widget to your web app with a token for development and one for production. See [An AI chat for your web app or site](https://vatio.ai/docs/guides/ai-chat-widget-for-your-website).
+or run `npx @vatio-ai/skills` in your project for the `vatio` skill, or add
+`https://vatio.ai/mcp` to any MCP client. Then ask it to build the agent and
+put this widget on your site: it takes the tag from `get_status`.
 
 ## With a script tag
 
@@ -63,7 +64,8 @@ useEffect(() => {
 
 Every option is also a `data-*` attribute on the script tag (`replyStyle` is
 `data-reply-style`). Anything you leave out comes from the workspace's own
-settings (**Channels → Web widget** in the inbox), then from the built-in default.
+settings (**Web chat** in the inbox, or the MCP's `update_widget`), then from
+the built-in default.
 
 | Option | |
 |---|---|
